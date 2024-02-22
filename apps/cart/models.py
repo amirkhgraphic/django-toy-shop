@@ -37,7 +37,7 @@ class Cart(MyBaseModel):
 class CartProduct(MyBaseModel):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='cart_products')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='carts')
-    quantity = models.PositiveIntegerField(null=True, blank=True)
+    quantity = models.PositiveIntegerField(default=1)
 
     def __str__(self):
         return f'{self.product.latest_price} x {self.quantity}'

@@ -4,12 +4,15 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 
+from .local_settings import ADMIN_URL
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path(f'{ADMIN_URL}', admin.site.urls),
     path("ckeditor5/", include('django_ckeditor_5.urls'), name="ck_editor_5_upload_file"),
     path('users/', include(('apps.user.urls', 'apps.user'), namespace='user')),
     path('blog/', include(('apps.blog.urls', 'apps.blog'), namespace='blog')),
     path('shop/', include(('apps.shop.urls', 'apps.shop'), namespace='shop')),
+    path('cart/', include(('apps.cart.urls', 'apps.cart'), namespace='cart')),
 
     path('api/', include(('apis.urls', 'apis'), namespace='api')),
 

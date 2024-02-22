@@ -45,7 +45,7 @@ class Product(MyBaseModel):
         if self.prices.exists():
             # return f'{price_obj.price} {price_obj.currency}'
             return price_obj.price
-        return None
+        return 0
 
     @property
     def is_available(self):

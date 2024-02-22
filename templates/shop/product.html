@@ -27,7 +27,7 @@
 					<div class="single-product-img">
 						<img src="{{ product.thumbnail.url }}" alt="">
 					</div>
-                        <!-- logo carousel -->
+                    <!-- logo carousel -->
                     <h3 class="text-muted mt-3">Gallery</h3>
                     <div class="logo-carousel-section pb-2">
                         <div class="container">
@@ -55,17 +55,19 @@
                         </p>
 						<p>{{ product.description | safe }}</p>
 						<div class="single-product-form">
-							<form action="{% url 'home' %}">
+							<form method="POST" action="{% url 'api:cart:cart-product-add' product.id %}">
+                                {% csrf_token %}
                                 <label for="quantityInput">
-                                    <input id="quantityInput" name="quantity" type="number" max="{{ product.quantity }}" min="1" placeholder="1"
-                                    oninput="if (Number(this.value) > Number(this.max)) this.value = this.max;"/>
+                                    <input id="quantityInput" name="quantity" type="number" max="{{ product.quantity }}" min="1" value="1"
+                                           oninput="if (Number(this.value) > Number(this.max)) this.value = this.max;"/>
                                 </label>
+							    <i class="fas fa-shopping-cart"></i><br>
+                                <input type="submit" class="cart-btn" value="Add to Cart">
                             </form>
-							<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
 							<p>
                                 <strong>Categories: </strong>
                                 {% for category in product.categories.all %}
-                                    <a href="####">{{ category.category.name }}</a>{% if not forloop.last %}, {% endif %}
+                                    <a href="{% url 'shop:category' category.category.id %}">{{ category.category.name }}</a>{% if not forloop.last %}, {% endif %}
                                 {% empty %}
                                     No Category...
                                 {% endfor %}

@@ -5,7 +5,7 @@ from django.contrib.auth import login, authenticate, get_user_model
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 
-from apps.user.forms import SignupForm, LoginForm, ProfileForm
+from apps.user.forms import User, SignupForm, LoginForm, ProfileForm
 
 
 class SignupView(FormView):
@@ -16,6 +16,7 @@ class SignupView(FormView):
     def form_valid(self, form):
         user = form.save(commit=False)
         user.set_password(form.cleaned_data['password'])
+        user.avatar = form.cleaned_data['avatar']
         user.save()
         login(self.request, user)
         if user is not None:
@@ -43,7 +44,7 @@ class LoginView(FormView):
 
 @method_decorator(login_required, name='dispatch')
 class ProfileUpdateView(UpdateView):
-    model = get_user_model()
+    model = User
     form_class = ProfileForm
     template_name = 'users/profile.html'
     success_url = reverse_lazy('user:profile')
