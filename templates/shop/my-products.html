@@ -1,0 +1,78 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}My Products{% endblock %}
+
+{% block main %}
+	<!-- breadcrumb-section -->
+	<div class="breadcrumb-section breadcrumb-bg">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="breadcrumb-text">
+						<p>{{ user.first_name }} {{ user.last_name }}</p>
+						<h1>My Products</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end breadcrumb section -->
+
+	<!-- latest news -->
+	<div class="latest-news mt-150 mb-150">
+		<div class="container">
+			<div class="row">
+                {% for product in products %}
+                    <div class="col-lg-4 col-md-6 text-center strawberry">
+                        <div class="single-product-item">
+                            <div class="product-image">
+                                <a href="{% url 'shop:product' product.id %}"><img src="{{ product.thumbnail.url }}" alt="{{ product.title }}"></a>
+                            </div>
+                            <h3>{{ product.title }}</h3>
+                            <p class="product-price"><span>Brand: {{ product.brand }}</span> {{ product.prices.first.price }} {{ product.prices.first.currency }} </p>
+                            <p class="blog-meta">
+                                <span class="author"><i class="fas fa-user"></i> {{ product.seller.user_name }}</span>
+                                <span class="date"><i class="fas fa-calendar"></i> {{ product.created_at.date }}</span>
+                            </p>
+                            <p class="m-4">{{ product.preview_description }}</p>
+                            <a href="{% url 'shop:update-product' product.id %}" class="cart-btn"><i class="fas fa-edit"></i> Edit</a>
+                            <a href="{% url 'shop:delete-product' product.id %}" class="read-more-btn ml-3" style="color:red"> Delete <i class="fas fa-trash"></i></a>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>empty!!!</p>
+                {% endfor %}
+			</div>
+		</div>
+	</div>
+	<!-- end latest news -->
+
+	<!-- logo carousel -->
+	<div class="logo-carousel-section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="logo-carousel-inner">
+						<div class="single-logo-item">
+							<img src="{% static 'img/company-logos/1.png' %}" alt="">
+						</div>
+						<div class="single-logo-item">
+							<img src="{% static 'img/company-logos/2.png' %}" alt="">
+						</div>
+						<div class="single-logo-item">
+							<img src="{% static 'img/company-logos/3.png' %}" alt="">
+						</div>
+						<div class="single-logo-item">
+							<img src="{% static 'img/company-logos/4.png' %}" alt="">
+						</div>
+						<div class="single-logo-item">
+							<img src="{% static 'img/company-logos/5.png' %}" alt="">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end logo carousel -->
+{% endblock %}

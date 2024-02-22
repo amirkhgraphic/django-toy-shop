@@ -1,0 +1,39 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_filters %}
+
+{% block title %}Profile{% endblock %}
+
+{% block main %}
+        <!-- hero area -->
+    <div class="hero-area hero-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 offset-lg-2 text-center">
+                    <div class="hero-text">
+                        <div class="hero-text-tablecell">
+                            <p class="subtitle">Welcome to OurBlog</p>
+                            <h1>{{ form.instance.first_name }} {{ form.instance.last_name  }}</h1>
+                            <div class="hero-btns">
+                                <a href="{% url 'shop:my-products' %}" class="boxed-btn">My Products</a>
+                                <a href="{% url 'blog:my-posts' %}" class="bordered-btn">My Posts</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end hero area -->
+
+
+    <!-- start form area -->
+    <div class="hero-bg p-5">
+        <form method="post" class="mt-3">
+            {% csrf_token %}
+            <img width="100" src="{{ form.instance.avatar.url }}" alt="Profile Picture">
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-secondary">Save Changes</button>
+        </form>
+    </div>
+    <!-- end form area -->
+{% endblock %}

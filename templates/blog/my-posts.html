@@ -1,0 +1,83 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}My Posts{% endblock %}
+
+{% block main %}
+	<!-- breadcrumb-section -->
+	<div class="breadcrumb-section breadcrumb-bg">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="breadcrumb-text">
+						<p>{{ user.first_name }} {{ user.last_name }}</p>
+						<h1>My Posts</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end breadcrumb section -->
+
+	<!-- latest news -->
+	<div class="latest-news mt-150 mb-150">
+		<div class="container">
+			<div class="row">
+                {% for post in posts %}
+                    <div class="col-lg-4 col-md-6">
+                        <div class="single-latest-news">
+                            <a href="{% url 'blog:post' post.id %}"><div class="latest-news-bg news-bg-1">
+                                <img src="{{ post.thumbnail.url }}" alt="{{ post.title }}">
+                            </div></a>
+                            <div class="news-text-box">
+                                <h3><a href="{% url 'blog:post' post.id %}">{{ post.title }}</a></h3>
+                                <p class="blog-meta">
+                                    <span class="author"><i class="fas fa-user"></i> {{ post.author.user_name }}</span>
+                                    <span class="date"><i class="fas fa-calendar"></i> {{ post.created_at.date }}</span>
+                                    {% if post.created_at != post.updated_at %}
+                                        <br><span class="date"><i class="fas fa-edit"></i> last modified on {{ post.updated_at.date }}</span>
+                                    {% endif %}
+                                </p>
+                                <p class="excerpt">{{ post.preview_body }}</p>
+                                <a href="{% url 'blog:post' post.id %}" class="read-more-btn">read more <i class="fas fa-angle-right"></i></a>
+                                <a href="{% url 'blog:update-post' post.id %}" class="read-more-btn" style="position:absolute; right:50px;"> Edit <i class="fas fa-edit"></i></a>
+                                <a href="{% url 'blog:delete-post' post.id %}" class="read-more-btn" style="color:red;position:absolute; right:50px;top:210px;"> Delete <i class="fas fa-trash"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>empty!!!</p>
+                {% endfor %}
+			</div>
+		</div>
+	</div>
+	<!-- end latest news -->
+
+	<!-- logo carousel -->
+	<div class="logo-carousel-section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="logo-carousel-inner">
+						<div class="single-logo-item">
+							<img src="{% static 'img/company-logos/1.png' %}" alt="">
+						</div>
+						<div class="single-logo-item">
+							<img src="{% static 'img/company-logos/2.png' %}" alt="">
+						</div>
+						<div class="single-logo-item">
+							<img src="{% static 'img/company-logos/3.png' %}" alt="">
+						</div>
+						<div class="single-logo-item">
+							<img src="{% static 'img/company-logos/4.png' %}" alt="">
+						</div>
+						<div class="single-logo-item">
+							<img src="{% static 'img/company-logos/5.png' %}" alt="">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end logo carousel -->
+{% endblock %}

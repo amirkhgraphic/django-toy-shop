@@ -1,0 +1,61 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}Create Post{% endblock %}
+
+{% block main %}
+    <!-- hero area -->
+    <div class="hero-area hero-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 offset-lg-2 text-center">
+                    <div class="hero-text">
+                        <div class="hero-text-tablecell">
+                            <p class="subtitle">Product App</p>
+                            <h1>Create Product Form</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end hero area -->
+
+
+    <!-- start form area -->
+    <div class="hero-bg p-5">
+        <form id="productForm" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Main post form fields -->
+            {{ form | crispy }}
+            {{ form.media }}
+            <!-- post fields -->
+
+            <br>
+
+            <!-- Categories section -->
+            <div>Categories</div>
+            <ul id="categoriesList"></ul>
+
+            <div id="categoriesSection">
+                <input type="text" id="categoryName" name="name" placeholder="Category Name">
+                <input type="file" id="categoryThumbnail" name="thumbnail" accept="image/*">
+                <button type="button" onclick="addCategory()">Add Category</button>
+            </div>
+
+            <hr>
+            <br>
+
+            <input type="submit" value="Create Product">
+        </form>
+    </div>
+    <!-- end form area -->
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/shop/create-category-product.js' %}"></script>
+<script src="{% static 'js/shop/create-gallery-product.js' %}"></script>
+{% endblock %}

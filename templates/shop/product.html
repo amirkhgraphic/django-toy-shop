@@ -1,0 +1,227 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Product{% endblock %}
+
+{% block main %}
+	<!-- breadcrumb-section -->
+	<div class="breadcrumb-section breadcrumb-bg">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="breadcrumb-text">
+						<p>See more Details on</p>
+						<h1>{{ product.title }}</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end breadcrumb section -->
+
+	<!-- single product -->
+	<div class="single-product mt-150 mb-150">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-5">
+					<div class="single-product-img">
+						<img src="{{ product.thumbnail.url }}" alt="">
+					</div>
+                        <!-- logo carousel -->
+                    <h3 class="text-muted mt-3">Gallery</h3>
+                    <div class="logo-carousel-section pb-2">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="logo-carousel-inner">
+                                        {% for media in product.media_files.all %}
+                                        <div class="single-logo-item">
+                                            {{ media.html_tag }}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end logo carousel -->
+				</div>
+				<div class="col-md-7">
+					<div class="single-product-content">
+						<h3>{{ product.title }}</h3>
+						<p class="single-product-pricing">
+                            <span><a href="#">{{ product.brand }}</a></span>
+                            {{ product.prices.first.price }} {{ product.prices.first.currency }}
+                        </p>
+						<p>{{ product.description | safe }}</p>
+						<div class="single-product-form">
+							<form action="{% url 'home' %}">
+                                <label for="quantityInput">
+                                    <input id="quantityInput" name="quantity" type="number" max="{{ product.quantity }}" min="1" placeholder="1"
+                                    oninput="if (Number(this.value) > Number(this.max)) this.value = this.max;"/>
+                                </label>
+                            </form>
+							<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+							<p>
+                                <strong>Categories: </strong>
+                                {% for category in product.categories.all %}
+                                    <a href="####">{{ category.category.name }}</a>{% if not forloop.last %}, {% endif %}
+                                {% empty %}
+                                    No Category...
+                                {% endfor %}
+                            </p>
+                            <p class="blog-meta">
+                                {% if user.id in liked_users %}
+                                <span class="like"><i id="product{{ product.id }}" class="fas fa-heart liked-post" onclick="toggleLike({{ product.id }}, {{ user.id }})"></i> {{ product.product_likes.count }}</span>
+                                {% else %}
+                                <span class="like"><i id="product{{ product.id }}" class="fas fa-heart" onclick="toggleLike({{ product.id }}, {{ user.id }})"></i> {{ product.product_likes.count }}</span>
+                                {% endif %}
+                                <span class="author"><i class="fas fa-user"></i> {{ product.seller.user_name }}</span>
+                                <span class="date"><i class="fas fa-calendar"></i> {{ product.created_at.date }}</span>
+                                {% if product.created_at != product.updated_at %}
+                                    <span class="date"><i class="fas fa-edit"></i> last modified on {{ product.updated_at.date }}</span>
+                                {% endif %}
+                            </p>
+						</div>
+						<h4>Share:</h4>
+						<ul class="product-share">
+							<li><a href=""><i class="fab fa-facebook-f"></i></a></li>
+							<li><a href=""><i class="fab fa-twitter"></i></a></li>
+							<li><a href=""><i class="fab fa-google-plus-g"></i></a></li>
+							<li><a href=""><i class="fab fa-linkedin"></i></a></li>
+						</ul>
+					</div>
+				</div>
+
+
+
+                <!-- comment list section -->
+                <div class="comments-list-wrap">
+                    <h3 class="comment-count-title">
+
+                        {{ comments_count }} Comment{{ comments_count | pluralize }}
+                    </h3>
+                    <div class="comment-list">
+                        {% for comment in product.shop_comments.all %}
+                            <div class="single-comment-body">
+                                <div class="comment-user-avater">
+                                    <img src="{{ comment.author.avatar.url }}" alt="{{ comment.author.user_name }}">
+                                </div>
+                                <div class="comment-text-body">
+                                    <h4>{{ comment.author.user_name }} <span class="comment-date">
+                                        {{ comment.created_at.date }}
+                                        {% if comment.created_at != comment.updated_at %}
+                                            {{ comment.created_at.date }} modified on {{ comment.updated_at.date }}
+                                        {% endif %}
+                                    </span> <a class="reply-btn" onclick="setReply({{ comment.id }}, '{{ comment.author.user_name }}')">reply</a></h4>
+                                    <p>{{ comment.body | safe }}</p>
+                                </div>
+                                {% for reply in comment.replies.all %}
+                                    <div class="single-comment-body child">
+                                        <div class="comment-user-avater">
+                                            <img src="{{ reply.author.avatar.url }}" alt="{{ reply.author.user_name }}">
+                                        </div>
+                                        <div class="comment-text-body">
+                                            <h4>{{ reply.author.user_name }} <span class="comment-date">
+                                                {{ reply.created_at.date }}
+                                                {% if reply.created_at != reply.updated_at %}
+                                                    {{ reply.created_at.date }} modified on {{ reply.updated_at.date }}
+                                                {% endif %}
+                                            </h4>
+                                            <p>{{ reply.body | safe }}</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% empty %}
+                            <p>no comments yet</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- end comment list section -->
+
+                <!-- comment template section -->
+                <div class="comment-template">
+                    <h4>Leave a comment</h4>
+                    <p>If you have a comment don't feel hesitate to send us your opinion.</p>
+
+                    <div id="replyingOn" class="my-2 alert-info">
+
+                    </div>
+                    <br>
+
+                    {% if user.is_authenticated %}
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        {{ form.media }}
+                        <input type="hidden" id="parentComment" name="parent_comment">
+                        <input type="submit">
+                    </form>
+                    {% else %}
+                    <div class="alert alert-warning" role="alert">
+                        You have to log in first. <a href="{% url 'user:log-in' %}" class="alert-link">Log-in here</a>.
+                        <br>
+                        You don't have an account yet? <a href="{% url 'user:sign-up' %}" class="alert-link">Sign-up here</a>
+                    </div>
+                    {% endif %}
+                </div>
+                <!-- end comment template section -->
+			</div>
+		</div>
+	</div>
+	<!-- end single product -->
+
+
+	<!-- more products -->
+	<div class="more-products mb-150">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="section-title">	
+						<h3><span class="orange-text">Related</span> Products</h3>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, fuga quas itaque eveniet beatae optio.</p>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-4 col-md-6 text-center">
+					<div class="single-product-item">
+						<div class="product-image">
+							<a href="product.html"><img src="{% static 'img/products/product-img-1.jpg' %}" alt=""></a>
+						</div>
+						<h3>Strawberry</h3>
+						<p class="product-price"><span>Per Kg</span> 85$ </p>
+						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 text-center">
+					<div class="single-product-item">
+						<div class="product-image">
+							<a href="product.html"><img src="{% static 'img/products/product-img-2.jpg' %}" alt=""></a>
+						</div>
+						<h3>Berry</h3>
+						<p class="product-price"><span>Per Kg</span> 70$ </p>
+						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 offset-lg-0 offset-md-3 text-center">
+					<div class="single-product-item">
+						<div class="product-image">
+							<a href="product.html"><img src="{% static 'img/products/product-img-3.jpg' %}" alt=""></a>
+						</div>
+						<h3>Lemon</h3>
+						<p class="product-price"><span>Per Kg</span> 35$ </p>
+						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end more products -->
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/general/reply.js' %}"></script>
+    <script src="{% static 'js/shop/like-product.js' %}"></script>
+{% endblock %}

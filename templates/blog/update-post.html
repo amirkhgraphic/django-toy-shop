@@ -1,0 +1,93 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}Update Post{% endblock %}
+
+{% block main %}
+    <!-- hero area -->
+    <div class="hero-area hero-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 offset-lg-2 text-center">
+                    <div class="hero-text">
+                        <div class="hero-text-tablecell">
+                            <p class="subtitle">Blog App</p>
+                            <h1>Update Post Form</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end hero area -->
+
+
+    <!-- start form area -->
+    <div class="hero-bg p-5">
+        <form id="postForm" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!-- Main post form fields -->
+            {{ form | crispy }}
+            {{ form.media }}
+            <!-- Other post fields -->
+            <br>
+            <!-- Categories section -->
+            <div>Categories</div>
+            <ul id="categoriesList">
+                {% for category in post.categories.all %}
+                <li data-category-id="{{ category.category.id }}">
+                    <span style="cursor: pointer" onclick="deleteCategory({{ post.id }}, {{ category.category.id }})">&times;</span>
+                    <img
+                        src="{{ category.category.thumbnail.url }}"
+                        alt="{{ category.category.name }}"
+                        height="20px"
+                        class="my-2"
+                    >
+                    {{ category.category.name }}
+                </li>
+                {% empty %}
+                <p>no category...</p>
+                {% endfor %}
+            </ul>
+
+            <div id="categoriesSection">
+                <input type="text" id="categoryName" name="name" placeholder="Category Name">
+                <input type="file" id="categoryThumbnail" name="thumbnail" accept="image/*">
+                <button type="button" onclick="addCategory()">Add Category</button>
+            </div>
+
+            <!-- Gallery section -->
+            <div>Gallery</div>
+            <ul id="galleryList">
+                {% for media in post.media_files.all %}
+                    <li data-gallery-id="{{ media.id }}" style="display: inline; margin-right: 5px;">
+                        <span style="cursor: pointer" onclick="deleteGallery({{ media.id }})">&times;</span>
+                        <img src="{{ media.file.url }}" alt="Gallery Item" height="100">
+                    </li>
+                {% empty %}
+                <p>no gallery...</p>
+                {% endfor %}
+            </ul>
+
+            <div id="gallerySection">
+                <input type="file" id="galleryFile" name="file" accept="image/*, video/*, audio/*" multiple>
+                <button type="button" onclick="addGallery({{ post.id }})">Add to Gallery</button>
+            </div>
+
+            <hr>
+            <br>
+
+            <button type="submit">Update Post</button>
+        </form>
+    </div>
+    <!-- end form area -->
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/blog/create-category-post.js' %}"></script>
+    <script src="{% static 'js/blog/create-gallery-post.js' %}"></script>
+    <script src="{% static 'js/blog/delete-category.js' %}"></script>
+    <script src="{% static 'js/blog/delete-gallery.js' %}"></script>
+{% endblock %}

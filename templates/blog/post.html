@@ -1,0 +1,180 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Blog{% endblock %}
+
+{% block main %}
+	<!-- breadcrumb-section -->
+	<div class="breadcrumb-section breadcrumb-bg">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="breadcrumb-text">
+						<p>Read the Details about</p>
+						<h1>{{ post.title }}</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end breadcrumb section -->
+	
+	<!-- single article section -->
+	<div class="mt-150 mb-150">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8">
+					<div class="single-article-section">
+						<div class="single-article-text">
+							<div class="single-artcile-bg">
+                                <img src="{{ post.thumbnail.url }}" alt="{{ post.title }}">
+                            </div>
+							<p class="blog-meta">
+                                {% if user.id in liked_users %}
+                                <span class="like"><i id="post{{ post.id }}" class="fas fa-heart liked-post" onclick="toggleLike({{ post.id }}, {{ user.id }})"></i> {{ post.post_likes.count }}</span>
+                                {% else %}
+                                <span class="like"><i id="post{{ post.id }}" class="fas fa-heart" onclick="toggleLike({{ post.id }}, {{ user.id }})"></i> {{ post.post_likes.count }}</span>
+                                {% endif %}
+								<span class="author"><i class="fas fa-user"></i> {{ post.author.user_name }}</span>
+                                <span class="date"><i class="fas fa-calendar"></i> {{ post.created_at.date }}</span>
+                                {% if post.created_at != post.updated_at %}
+                                    <span class="date"><i class="fas fa-edit"></i> last modified on {{ post.updated_at.date }}</span>
+                                {% endif %}
+							</p>
+							<h2>{{ post.title }}</h2>
+
+                            {{ post.body | safe }}
+						</div>
+
+						<div class="comments-list-wrap">
+							<h3 class="comment-count-title">
+                                {{ comments_count }} Comment{{ comments_count | pluralize }}
+                            </h3>
+							<div class="comment-list">
+                                {% for comment in post.post_comments.all %}
+                                    {% if not comment.parent_comment %}
+                                        <div class="single-comment-body">
+                                            <div class="comment-user-avater">
+                                                <img src="{{ comment.author.avatar.url }}" alt="{{ comment.author.user_name }}">
+                                            </div>
+                                            <div class="comment-text-body">
+                                                <h4>{{ comment.author.user_name }} <span class="comment-date">
+                                                    {{ comment.created_at.date }}
+                                                    {% if comment.created_at != comment.updated_at %}
+                                                        {{ comment.created_at.date }} modified on {{ comment.updated_at.date }}
+                                                    {% endif %}
+                                                </span> <a class="reply-btn" onclick="setReply({{ comment.id }}, '{{ comment.author.user_name }}')">reply</a></h4>
+                                                <p>{{ comment.body | safe }}</p>
+                                            </div>
+                                            {% for reply in comment.replies.all %}
+                                                <div class="single-comment-body child">
+                                                    <div class="comment-user-avater">
+                                                        <img src="{{ reply.author.avatar.url }}" alt="{{ reply.author.user_name }}">
+                                                    </div>
+                                                    <div class="comment-text-body">
+                                                        <h4>{{ reply.author.user_name }} <span class="comment-date">
+                                                            {{ reply.created_at.date }}
+                                                            {% if reply.created_at != reply.updated_at %}
+                                                                {{ reply.created_at.date }} modified on {{ reply.updated_at.date }}
+                                                            {% endif %}
+                                                        </h4>
+                                                        <p>{{ reply.body | safe }}</p>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                {% empty %}
+                                    <p>no comments yet</p>
+                                {% endfor %}
+							</div>
+						</div>
+
+						<div class="comment-template">
+							<h4>Leave a comment</h4>
+							<p>If you have a comment don't feel hesitate to send us your opinion.</p>
+
+                            <div id="replyingOn" class="my-2 alert-info">
+
+                            </div>
+                            <br>
+
+                            {% if user.is_authenticated %}
+                            <form method="post">
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                                {{ form.media }}
+                                <input type="hidden" id="parentComment" name="parent_comment">
+                                <input type="submit">
+                            </form>
+                            {% else %}
+                            <div class="alert alert-warning" role="alert">
+                                You have to log in first. <a href="{% url 'user:log-in' %}" class="alert-link">Log-in here</a>.
+                                <br>
+                                You don't have an account yet? <a href="{% url 'user:sign-up' %}" class="alert-link">Sign-up here</a>
+                            </div>
+                            {% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4">
+					<div class="sidebar-section">
+						<div class="recent-posts">
+							<h4>Recent Posts</h4>
+							<ul>
+								{% for new_post in recent_posts.all %}
+								<li><a href="{% url 'blog:post' new_post.id %}">{{ new_post.title }}</a></li>
+                                {% empty %}
+                                <p>no posts yet...</p>
+                                {% endfor %}
+							</ul>
+						</div>
+						<div class="tag-section">
+							<h4>Categories</h4>
+							<ul>
+                                {% for category in post.categories.all %}
+                                    <li><a href="{% url 'blog:category' category.category.id %}">
+                                        <img
+                                            src="{{ category.category.thumbnail.url }}"
+                                            alt="{{ category.category.name }}"
+                                            height="20px"
+                                            class="my-2"
+                                        >
+                                        {{ category.category.name }}
+                                    </a></li>
+
+                                {% empty %}
+                                <p>no category for this post exists</p>
+                                {% endfor %}
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end single article section -->
+
+	<!-- logo carousel -->
+	<div class="logo-carousel-section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="logo-carousel-inner">
+                        {% for media in post.media_files.all %}
+						<div class="single-logo-item">
+                            {{ media.html_tag }}
+						</div>
+                        {% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end logo carousel -->
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/general/reply.js' %}"></script>
+    <script src="{% static 'js/blog/like-post.js' %}"></script>
+{% endblock %}
