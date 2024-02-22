@@ -24,10 +24,13 @@ class Signup(APIView):
 class Login(APIView):
     def post(self, request):
         user = get_object_or_404(User, user_name=request.data['user_name'])
+
         if not user.check_password(request.data['password']):
             return Response("Invalid credentials", status=status.HTTP_404_NOT_FOUND)
+
         token, created = Token.objects.get_or_create(user=user)
         serializer = UserSerializer(user)
+
         return Response({'token': token.key, 'user': serializer.data})
 
 

@@ -64,16 +64,17 @@ class CommentDestroyAPIView(RetrieveDestroyAPIView):
 @api_view(['POST'])
 def like_api_view(request, post_id, user_id):
     try:
-        like = Like.objects.get(post_id=post_id, user_id=user_id)
-        like.delete()  # Remove like if it already exists
+        Like.objects.get(post_id=post_id, user_id=user_id)
         return Response({'detail': 'removed'}, status=status.HTTP_200_OK)
+
     except Like.DoesNotExist:
-        # Like does not exist, so create it
         like_data = {'post': post_id, 'user': user_id}
         serializer = LikeCreateSerializer(data=like_data)
+
         if serializer.is_valid():
             Like.objects.create(post_id=post_id, user_id=user_id)
             return Response({'detail': 'created'}, status=status.HTTP_201_CREATED)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

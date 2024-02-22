@@ -56,6 +56,7 @@ class CategoryProductDeleteAPIView(APIView):
             category_product = CategoryProduct.objects.get(product_id=product_id, category_id=category_id)
             category_product.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
+
         except CategoryProduct.DoesNotExist:
             return Response({'error': 'CategoryProduct does not exist'}, status=status.HTTP_404_NOT_FOUND)
 

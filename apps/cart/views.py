@@ -16,14 +16,3 @@ class CartDetailView(DetailView):
             latest_cart = Cart.objects.create(user_id=user_id, is_paid=False)
 
         return latest_cart
-
-
-class CartUpdateView(DetailView):
-    model = Cart
-    template_name = 'cart/cart-update.html'
-    context_object_name = 'cart'
-
-
-class CartDeleteView(DetailView):
-    model = Cart
-    template_name = 'cart/cart-detele.html'

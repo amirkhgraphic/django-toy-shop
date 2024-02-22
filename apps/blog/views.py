@@ -38,13 +38,10 @@ class PostCreateView(CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
 
-        # Save the post object
         post = form.save()
 
-        # Retrieve selected categories from the form
         selected_categories = set(self.request.POST.getlist('category-id'))
 
-        # Create CategoryPost instances for each selected category
         for category_id in selected_categories:
             CategoryPost.objects.get_or_create(post=post, category_id=category_id)
 
@@ -61,13 +58,10 @@ class PostUpdateView(UpdateView):
         return reverse_lazy('blog:post', kwargs={'pk': self.object.pk})
 
     def form_valid(self, form):
-        # Save the post object
         post = form.save()
 
-        # Retrieve selected categories from the form
         selected_categories = set(self.request.POST.getlist('category-id'))
 
-        # Create CategoryPost instances for each selected category
         for category_id in selected_categories:
             CategoryPost.objects.get_or_create(post=post, category_id=category_id)
 
