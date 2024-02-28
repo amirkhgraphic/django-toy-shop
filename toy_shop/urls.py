@@ -16,10 +16,10 @@ urlpatterns = [
     path('cart/', include(('cart.urls', 'cart'), namespace='cart')),
     path('finance/', include(('finance.urls', 'finance'), namespace='finance')),
 
-    path('api/user/', include(('user.api_urls', 'user'), namespace='api:user')),
-    path('api/blog/', include(('blog.api_urls', 'blog'), namespace='api:blog')),
-    path('api/shop/', include(('shop.api_urls', 'shop'), namespace='api:shop')),
-    path('api/cart/', include(('cart..api_urls', 'cart'), namespace='api:cart')),
+    path('api/user/', include(('user.api_urls', 'user'), namespace='api_user')),
+    path('api/blog/', include(('blog.api_urls', 'blog'), namespace='api_blog')),
+    path('api/shop/', include(('shop.api_urls', 'shop'), namespace='api_shop')),
+    path('api/cart/', include(('cart.api_urls', 'cart'), namespace='api_cart')),
 
     path('', TemplateView.as_view(template_name='home/home.html'), name='home'),
     path('about/', TemplateView.as_view(template_name='home/about.html'), name='about'),
