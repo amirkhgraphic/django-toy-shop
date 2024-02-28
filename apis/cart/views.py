@@ -5,7 +5,7 @@ from django.utils.decorators import method_decorator
 from rest_framework.generics import DestroyAPIView
 
 from apis.cart.serializers import CartProductDeleteSerializer
-from apps.cart.models import Cart, CartProduct
+from cart import Cart, CartProduct
 
 
 @login_required

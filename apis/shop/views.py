@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 
 
 from apis.shop.serializers import LikeCreateSerializer, CategoryCreateSerializer, GallerySerializer
-from apps.shop.models import Like, Category, CategoryProduct, Gallery
+from shop.models import Like, Category, CategoryProduct, Gallery
 
 
 @api_view(['POST'])

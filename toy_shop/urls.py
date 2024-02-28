@@ -9,13 +9,16 @@ from .local_settings import ADMIN_URL
 urlpatterns = [
     path(f'{ADMIN_URL}', admin.site.urls),
     path("ckeditor5/", include('django_ckeditor_5.urls'), name="ck_editor_5_upload_file"),
-    path('users/', include(('apps.user.urls', 'apps.user'), namespace='user')),
-    path('blog/', include(('apps.blog.urls', 'apps.blog'), namespace='blog')),
-    path('shop/', include(('apps.shop.urls', 'apps.shop'), namespace='shop')),
-    path('cart/', include(('apps.cart.urls', 'apps.cart'), namespace='cart')),
-    path('finance/', include(('apps.finance.urls', 'apps.finance'), namespace='finance')),
+    path('users/', include(('user.urls', 'user'), namespace='user')),
+    path('blog/', include(('blog.urls', 'blog'), namespace='blog')),
+    path('shop/', include(('shop.urls', 'shop'), namespace='shop')),
+    path('cart/', include(('cart.urls', 'cart'), namespace='cart')),
+    path('finance/', include(('finance.urls', 'finance'), namespace='finance')),
 
-    path('api/', include(('apis.urls', 'apis'), namespace='api')),
+    path('api/user/', include(('user.api_urls', 'user'), namespace='api:user')),
+    path('api/blog/', include(('blog.api_urls', 'blog'), namespace='api:blog')),
+    path('api/shop/', include(('shop.api_urls', 'shop'), namespace='api:shop')),
+    path('api/cart/', include(('cart..api_urls', 'cart'), namespace='api:cart')),
 
     path('', TemplateView.as_view(template_name='home/home.html'), name='home'),
     path('about/', TemplateView.as_view(template_name='home/about.html'), name='about'),

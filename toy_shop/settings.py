@@ -23,11 +23,11 @@ INSTALLED_APPS = [
 
     # Apps
     'utils',
-    'apps.user.apps.UserConfig',
-    'apps.blog.apps.BlogConfig',
-    'apps.shop.apps.ShopConfig',
-    'apps.cart.apps.CartConfig',
-    'apps.finance.apps.FinanceConfig',
+    'user.apps.UserConfig',
+    'blog.apps.BlogConfig',
+    'shop.apps.ShopConfig',
+    'cart.apps.CartConfig',
+    'finance.apps.FinanceConfig',
 
     # APIs
     'apis',

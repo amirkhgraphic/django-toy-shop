@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.shop.models import Like, Category, Gallery
+from shop.models import Like, Category, Gallery
 
 
 class LikeCreateSerializer(serializers.ModelSerializer):
