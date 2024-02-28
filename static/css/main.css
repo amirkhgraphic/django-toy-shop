@@ -409,7 +409,9 @@ p:last-child {
   background-color: #162133;
 }
 
-a.boxed-btn {
+a.boxed-btn, button.boxed-btn {
+  all: unset;
+  border-radius: 5rem;
   font-family: 'Poppins', sans-serif;
   display: inline-block;
   background-color: #F28123;
