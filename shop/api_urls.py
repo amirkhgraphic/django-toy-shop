@@ -1,7 +1,7 @@
 from django.urls import path
 
-from apis.shop.views import (like_api_view, CategoryCreateAPIView, CategoryProductDeleteAPIView, GalleryCreateAPIView,
-                             GalleryDeleteAPIView)
+from shop.api import (like_api_view, CategoryCreateAPIView, CategoryProductDeleteAPIView, GalleryCreateAPIView,
+                      GalleryDeleteAPIView)
 
 urlpatterns = [
     # Like

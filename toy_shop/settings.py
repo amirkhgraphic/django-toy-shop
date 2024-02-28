@@ -28,13 +28,6 @@ INSTALLED_APPS = [
     'shop.apps.ShopConfig',
     'cart.apps.CartConfig',
     'finance.apps.FinanceConfig',
-
-    # APIs
-    'apis',
-    'apis.blog.apps.BlogConfig',
-    'apis.shop.apps.ShopConfig',
-    'apis.cart.apps.CartConfig',
-    'apis.finance.apps.FinanceConfig',
 ]
 
 MIDDLEWARE = [

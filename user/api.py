@@ -5,7 +5,8 @@ from rest_framework.authentication import SessionAuthentication, TokenAuthentica
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from rest_framework.authtoken.models import Token
-from apis.user.serializers import UserSerializer, User
+
+from user.serializers import UserSerializer, User
 
 
 class Signup(APIView):

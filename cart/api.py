@@ -4,8 +4,8 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from rest_framework.generics import DestroyAPIView
 
-from apis.cart.serializers import CartProductDeleteSerializer
-from cart import Cart, CartProduct
+from cart.serializers import CartProductDeleteSerializer
+from cart.models import Cart, CartProduct
 
 
 @login_required

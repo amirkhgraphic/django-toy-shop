@@ -6,6 +6,7 @@ from django.views.generic import TemplateView
 
 from .local_settings import ADMIN_URL
 
+
 urlpatterns = [
     path(f'{ADMIN_URL}', admin.site.urls),
     path("ckeditor5/", include('django_ckeditor_5.urls'), name="ck_editor_5_upload_file"),

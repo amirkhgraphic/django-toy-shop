@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 
-from apis.shop.serializers import LikeCreateSerializer, CategoryCreateSerializer, GallerySerializer
+from shop.serializers import LikeCreateSerializer, CategoryCreateSerializer, GallerySerializer
 from shop.models import Like, Category, CategoryProduct, Gallery
 
 

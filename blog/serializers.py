@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from blog import User, Post, Like, Category, Comment, Gallery, CategoryPost
+from blog.models import User, Post, Like, Category, Comment, Gallery, CategoryPost
 
 
 class AuthorSerializer(serializers.ModelSerializer):

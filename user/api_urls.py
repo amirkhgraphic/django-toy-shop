@@ -1,6 +1,6 @@
 from django.urls import path
 
-from apis.user.views import Signup, Login, TestToken
+from user.api import Signup, Login, TestToken
 
 urlpatterns = [
     path('signup/', Signup.as_view(), name='sign-up'),
