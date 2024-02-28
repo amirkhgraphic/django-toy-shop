@@ -17,22 +17,12 @@ class PaymentCreateView(CreateView):
         context['cart'] = self.request.user.carts.get(user=self.request.user, is_paid=False)
         return context
 
-    def post(self, request, *args, **kwargs):
-        user = self.request.user
-        cart = self.request.user.carts.get(user=self.request.user, is_paid=False)
-        # Payment.objects.create(user=user, cart=cart, is_paid=True, is_active=True)
-        method = self.request.POST.get('payment_method')
-        print(method)
-        print('done'*100)
-
-    def create(self, *args, **kwargs):
-        print('hre')
-
     def form_valid(self, form):
-        print(form.instance)
-        form.instance.user = self.request.user
-        form.instance.cart = self.request.user.carts.get(user=self.request.user, is_paid=False)
-        form.instance.is_paid = True
-        form.save(commit=False)
+        payment = form.save(commit=False)
 
+        payment.user = self.request.user
+        payment.cart = self.request.user.carts.get(user=self.request.user, is_paid=False)
+        payment.is_paid = True
+
+        payment.save()
         return super().form_valid(form)

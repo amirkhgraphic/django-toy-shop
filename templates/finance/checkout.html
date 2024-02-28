@@ -127,11 +127,11 @@
 								</tr>
 							</tbody>
 						</table>
-                        <form action="">
+                        <form method="POST">
                             {% csrf_token %}
                             {{ form | crispy }}
                             <button type="submit" class="boxed-btn">Purchase</button>
-                            <a href="#" class="boxed-btn">Cancel</a>
+                            <a href="{% url 'finance:failed' %}" class="boxed-btn">Cancel</a>
                         </form>
 					</div>
 				</div>
