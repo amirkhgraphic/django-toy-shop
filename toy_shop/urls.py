@@ -13,6 +13,7 @@ urlpatterns = [
     path('blog/', include(('apps.blog.urls', 'apps.blog'), namespace='blog')),
     path('shop/', include(('apps.shop.urls', 'apps.shop'), namespace='shop')),
     path('cart/', include(('apps.cart.urls', 'apps.cart'), namespace='cart')),
+    path('finance/', include(('apps.finance.urls', 'apps.finance'), namespace='finance')),
 
     path('api/', include(('apis.urls', 'apis'), namespace='api')),
 

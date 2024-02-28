@@ -8,4 +8,4 @@ class PaymentCreateView(CreateView):
     model = Payment
     fields = ('payment_method',)
     template_name = 'finance/checkout.html'
-    success_url = reverse_lazy('')
+    success_url = reverse_lazy('finance:success')
