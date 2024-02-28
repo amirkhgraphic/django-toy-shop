@@ -28,10 +28,26 @@ class GalleryInline(RenderContentMixin, InlineMixin, admin.TabularInline):
     readonly_fields = InlineMixin.readonly_fields + ('render_content', 'render_name')
 
 
+class CategoryFilter(admin.SimpleListFilter):
+    title = 'Categories'
+    parameter_name = 'categories'
+
+    def lookups(self, request, model_admin):
+        categories = Category.objects.all().order_by('name')
+        return [(category.id, category.name) for category in categories]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            category_id = self.value()
+            posts_ids = CategoryPost.objects.filter(category_id=category_id).values_list('post_id', flat=True)
+            return queryset.filter(id__in=posts_ids)
+        return queryset
+
+
 @admin.register(Post)
 class PostAdmin(LinkifyMixin, DateListFilterMixin, ActionsMixin, ThumbnailMixin, admin.ModelAdmin):
     list_display = ('render_thumbnail', 'title', 'author_link', 'likes_count', 'created_at', 'updated_at', 'is_active')
-    list_filter = ('author', 'categories') + DateListFilterMixin.list_filter
+    list_filter = ('author', CategoryFilter) + DateListFilterMixin.list_filter
     fields = ('title', ('thumbnail', 'render_thumbnail'), 'body', 'author', 'likes_count', 'created_at', 'updated_at')
     inlines = (LikeInline, CategoryPostInline, CommentInline, GalleryInline)
     readonly_fields = ('render_thumbnail', 'likes_count', 'created_at', 'updated_at')
@@ -58,6 +74,7 @@ class PostAdmin(LinkifyMixin, DateListFilterMixin, ActionsMixin, ThumbnailMixin,
 
 @admin.register(Category)
 class CategoryAdmin(DateListFilterMixin, ActionsMixin, ThumbnailMixin, admin.ModelAdmin):
+    inlines = [CategoryPostInline]
     list_display = ('render_thumbnail', 'name', 'created_at', 'updated_at', 'is_active')
     fields = ('name', 'thumbnail', 'render_thumbnail', 'created_at', 'updated_at')
     readonly_fields = ('render_thumbnail', 'created_at', 'updated_at')
