@@ -1,4 +1,5 @@
 {% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
 {% load static %}
 
 {% block title %}Check Out{% endblock %}
@@ -100,10 +101,10 @@
 									<td>Product</td>
 									<td>Total</td>
 								</tr>
-                                {% for cart_product in cart.cart_products.all %}
+                                {% for product in cart.cart_products.all %}
 								<tr>
-									<td>{{ cart_product.product.title }}</td>
-									<td>{{ cart_product.total_price }}</td>
+									<td>{{ product.product.title }}</td>
+									<td>{{ product.total_price }}</td>
 								</tr>
                                 {% empty %}
                                 <tr>
@@ -114,19 +115,24 @@
 							<tbody class="checkout-details">
 								<tr>
 									<td>Subtotal</td>
-									<td>$190</td>
+									<td>${{ cart.total_price }}</td>
 								</tr>
 								<tr>
 									<td>Shipping</td>
-									<td>$50</td>
+									<td>$0</td>
 								</tr>
 								<tr>
 									<td>Total</td>
-									<td>$240</td>
+									<td>${{ cart.total_price }}</td>
 								</tr>
 							</tbody>
 						</table>
-						<a href="#" class="boxed-btn">Place Order</a>
+                        <form action="">
+                            {% csrf_token %}
+                            {{ form | crispy }}
+                            <button type="submit" class="boxed-btn">Purchase</button>
+                            <a href="#" class="boxed-btn">Cancel</a>
+                        </form>
 					</div>
 				</div>
 			</div>
