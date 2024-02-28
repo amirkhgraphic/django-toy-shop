@@ -21,7 +21,7 @@ urlpatterns = [
     path('about/', TemplateView.as_view(template_name='home/about.html'), name='about'),
     path('contact/', TemplateView.as_view(template_name='home/contact.html'), name='contact'),
     path('cart/', TemplateView.as_view(template_name='cart/cart.html'), name='cart'),
-    path('checkout/', TemplateView.as_view(template_name='cart/checkout.html'), name='cart'),
+    path('checkout/', TemplateView.as_view(template_name='finance/checkout.html'), name='cart'),
     path('404/', TemplateView.as_view(template_name='404.html'), name='404'),
 ]
 

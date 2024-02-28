@@ -105,7 +105,7 @@
 						</table>
 						<div class="cart-buttons">
 							<a href="cart.html" class="boxed-btn">Update Cart</a>
-							<a href="checkout.html" class="boxed-btn black">Check Out</a> {% comment %}{% url 'payment:checkout' cart.id %}{% endcomment %}
+							<a href="{% url 'finance:checkout' %}" class="boxed-btn black">Check Out</a>
 						</div>
 					</div>
 

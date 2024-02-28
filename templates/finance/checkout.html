@@ -10,7 +10,7 @@
 			<div class="row">
 				<div class="col-lg-8 offset-lg-2 text-center">
 					<div class="breadcrumb-text">
-						<p>Fresh and Organic</p>
+						<p>Finance App</p>
 						<h1>Check Out Product</h1>
 					</div>
 				</div>
@@ -100,18 +100,16 @@
 									<td>Product</td>
 									<td>Total</td>
 								</tr>
+                                {% for cart_product in cart.cart_products.all %}
 								<tr>
-									<td>Strawberry</td>
-									<td>$85.00</td>
+									<td>{{ cart_product.product.title }}</td>
+									<td>{{ cart_product.total_price }}</td>
 								</tr>
-								<tr>
-									<td>Berry</td>
-									<td>$70.00</td>
+                                {% empty %}
+                                <tr>
+									<td>Nothing ... </td>
 								</tr>
-								<tr>
-									<td>Lemon</td>
-									<td>$35.00</td>
-								</tr>
+                                {% endfor %}
 							</tbody>
 							<tbody class="checkout-details">
 								<tr>
