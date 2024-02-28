@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from rest_framework.generics import DestroyAPIView
 
 from apis.cart.serializers import CartProductDeleteSerializer
@@ -22,6 +23,7 @@ def cart_product_api_view(request, product_id):
 
     return redirect(reverse_lazy('cart:detail'))
 
+
 @login_required
 def cart_product_add_api_view(request, product_id):
     quantity = request.POST.get('quantity') or 1
@@ -39,7 +41,8 @@ def cart_product_add_api_view(request, product_id):
 
     return redirect(reverse_lazy('cart:detail'))
 
-@login_required
+
+@method_decorator(login_required, name='dispatch')
 class CartProductDeleteAPIView(DestroyAPIView):
     queryset = CartProduct.objects.all()
     serializer_class = CartProductDeleteSerializer
